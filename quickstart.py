@@ -47,5 +47,14 @@ if useGUI == True :
 
 
 #start bot
-bot = EasyApplyBot(username,password, language, position, location, resumeloctn)
+
+username22 = "mantiereidii@gmail.com"
+password22 = "3464!!@@##TT"
+language22 = "en"
+postion22 = "software developer"
+
+location22 = "New York"
+resumeloctn22 = "C:\Users\gunzs\OneDrive\Documents and everything\Documents\For Linkedin Easy apply Software Developer\Reid.Mantie.resume.docx"
+
+bot = EasyApplyBot(username=username22,password=password22, language=language22, position=postion22, location=location22)
 bot.start_apply()

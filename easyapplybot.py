@@ -1,4 +1,5 @@
 import time, random, os, csv, datetime
+import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
@@ -13,13 +14,13 @@ import pyautogui
 from tkinter import filedialog, Tk
 import tkinter.messagebox as tm
 from urllib.request import urlopen
-import loginGUI 
+import loginGUI
 
 # pyinstaller --onefile --windowed --icon=app.ico easyapplybot.py
 
 class EasyApplyBot:
 
-    MAX_APPLICATIONS = 500
+    MAX_APPLICATIONS = 20
 
     def __init__(self,username,password, language, position, location, resumeloctn, appliedJobIDs, filename):
 
@@ -116,7 +117,7 @@ class EasyApplyBot:
         self.browser.maximize_window()
         self.browser, _ = self.next_jobs_page(jobs_per_page)
         print("\nLooking for jobs.. Please wait..\n")
-        #below was causing issues, and not sure what they are for. 
+        #below was causing issues, and not sure what they are for.
         #self.browser.find_element_by_class_name("jobs-search-dropdown__trigger-icon").click()
         #self.browser.find_element_by_class_name("jobs-search-dropdown__option").click()
         #self.job_page = self.load_page(sleep=0.5)
@@ -178,7 +179,7 @@ class EasyApplyBot:
                 if count_application % 20 == 0:
                     sleepTime = random.randint(500, 900)
                     print('\n\n****************************************\n\n')
-                    print('Time for a nap - see you in: ' + int(sleepTime/60) + 'min..')
+                    print('Time for a nap - see you in: ' + str(int(sleepTime/60)) + 'min..')
                     print('\n\n****************************************\n\n')
                     time.sleep (sleepTime)
 
@@ -271,7 +272,7 @@ class EasyApplyBot:
 
             #After submiting the application, a dialog shows up, we need to close this dialog
             close_button = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Dismiss']")))
-            
+
             close_button.click()
 
         except :
@@ -288,18 +289,19 @@ class EasyApplyBot:
             self.browser.execute_script("window.scrollTo(0,0);")
             time.sleep(sleep * 3)
 
-        page = BeautifulSoup(self.browser.page_source, "lxml")
+        page = BeautifulSoup(self.browser.page_source, "html.parser") # its saying it cant find the tree builder of lxml
         return page
 
     def avoid_lock(self):
-        x, _ = pyautogui.position()
-        pyautogui.moveTo(x+200, None, duration=1.0)
-        pyautogui.moveTo(x, None, duration=0.5)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('esc')
-        pyautogui.keyUp('ctrl')
-        time.sleep(0.5)
-        pyautogui.press('esc')
+
+     # x, something = pyautogui.position()
+    #  pyautogui.moveTo(x+200,None,1)  # Have a error right here. For some dumb reason, Duration is returning as an error.
+     # pyautogui.moveTo(x, None, 0.5)
+     # pyautogui.keyDown('ctrl')
+     # pyautogui.press('esc')
+     # pyautogui.keyUp('ctrl')
+     time.sleep(0.5)
+     # pyautogui.press('esc')
 
     def next_jobs_page(self, jobs_per_page):
         self.browser.get(
@@ -316,7 +318,7 @@ if __name__ == '__main__':
 
     # set use of gui (T/F)
 
-    useGUI = True
+    useGUI = False
     #useGUI = False
 
     # use gui
@@ -340,12 +342,12 @@ if __name__ == '__main__':
     # no gui
     if useGUI == False:
 
-        username = ''
-        password = ''
+        username = 'mantiereidii@gmail.com'
+        password = '3464!!@@##TT'
         language = 'en'
-        position = 'marketing'
-        location = ''
-        resumeloctn = ''
+        position = 'Software Developer'
+        location = 'New York'
+        resumeloctn = 'C:\\Users\gunzs\OneDrive\Documents and everything\Documents\For Linkedin Easy apply Software Developer'
 
     # print input
     print("\nThese is your input:")
@@ -369,5 +371,15 @@ if __name__ == '__main__':
         appliedJobIDs = []
 
     # start bot
-    bot = EasyApplyBot(username, password, language, position, location, resumeloctn, appliedJobIDs, filename)
+    username22 = "mantiereidii@gmail.com"
+    password22 = "3464!!@@##TT"
+    language22 = "en"
+    postion22 = "software developer"
+
+    location22 = "New York"
+    resumeloctn22 = "C:\\Users\gunzs\OneDrive\Documents and everything\Documents\For Linkedin Easy apply Software Developer"
+    filename23 = "Reid.Mantie.resume.docx"
+    appliedJobIDs23 = [1737129750]
+
+    bot = EasyApplyBot(username=username22, password=password22, language=language22, position=postion22, location=location22, resumeloctn=resumeloctn22, appliedJobIDs=appliedJobIDs23, filename=filename23)
     bot.start_apply()
